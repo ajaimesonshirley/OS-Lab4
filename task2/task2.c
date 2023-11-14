@@ -7,8 +7,9 @@ int subtract(int a, int b);
 int multiply(int a, int b);
 int divide(int a, int b);
 
+typedef int (*Operation)(int, int);
 
-int main (void)
+int main ()
 {
   //pre-defined integers
 	int num1 = 4;
@@ -16,7 +17,7 @@ int main (void)
   char input;
 
   //array of function pointers
-  int (*operations[4])(int, int) = {add, subtract, multiply, divide};
+  Operation operations[4] = {add, subtract, multiply, divide};
 
   do{
     printf("Choose an operation:\n");
@@ -32,23 +33,12 @@ int main (void)
 
     //convert the character to an integer
     int operation = input - '0';
-    
-    if (operation >=0 && operation <=4){
-      if (operation == 4){
-        printf("Exiting program.\n");
-        break;
-      }
 
-      if (operation == 3 && num2 == 0){
-        printf("The number cannot be divided by zero.\n");
-      }
-      else{
-        printf("Result: %d\n", operations[operation](num1, num2));
-      }
-    }    
-    else{
-      printf("Invalid choice. Please select one of the given options.\n");
-    }
+    //check if the input is valid
+    operation = (operation >= 0 && operation <= 4) ? operation : 0;
+
+    printf("Result: %d\n", operations[operation](num1, num2));    
+    
   } while (input != '4');
 
 	return 0;
